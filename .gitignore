@@ -1,0 +1,35 @@
+# Node modules
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# Production builds
+dist/
+client/dist/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Docker logs
+*.log
+docker-compose.override.yml
+
+# IDE / System files
+.vscode/
+.idea/
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Database (Optional: Keep if you want to seed data, remove if you want a blank slate)
+# server/db.json
