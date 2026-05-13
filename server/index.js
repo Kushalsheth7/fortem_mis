@@ -1,51 +1,69 @@
 const express = require('express');
 const cors = require('cors');
-const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
+const helmet = require('helmet');
+const compression = require('compression');
+const morgan = require('morgan');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+// FORCE PORT 5000 to match Docker and Frontend Storage expectations
+const PORT = 5000; 
 const DB_FILE = path.join(__dirname, 'db.json');
 
+app.use(helmet({ contentSecurityPolicy: false }));
+app.use(compression());
+app.use(morgan('dev'));
 app.use(cors());
-app.use(bodyParser.json({ limit: '50mb' }));
+app.use(express.json({ limit: '10mb' }));
 
-// Helper to read DB
+// Helper: Read DB
 const readDB = () => {
-    try {
-        if (!fs.existsSync(DB_FILE)) return {};
-        const data = fs.readFileSync(DB_FILE, 'utf8');
-        if (!data || data.trim() === "") return {};
-        return JSON.parse(data);
-    } catch (e) {
-        console.error("Error reading DB:", e);
-        return {};
-    }
+  try {
+    if (!fs.existsSync(DB_FILE)) return {};
+    const data = fs.readFileSync(DB_FILE, 'utf8');
+    return JSON.parse(data || '{}');
+  } catch (err) {
+    console.error('DB Read Error:', err);
+    return {};
+  }
 };
 
-// Helper to write DB
+// Helper: Write DB
 const writeDB = (data) => {
+  try {
     fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
+    return true;
+  } catch (err) {
+    console.error('DB Write Error:', err);
+    return false;
+  }
 };
 
-// Storage Get API
+app.get('/health', (req, res) => res.status(200).json({ status: 'UP', port: PORT }));
+
 app.get('/api/storage/:key', (req, res) => {
-    const { key } = req.params;
-    const db = readDB();
-    res.json({ value: db[key] || null });
+  const db = readDB();
+  const value = db[req.params.key] || null;
+  res.json({ value });
 });
 
-// Storage Set API
-app.post('/api/storage/:key', (req, res) => {
-    const { key } = req.params;
-    const { value } = req.body;
-    const db = readDB();
-    db[key] = value;
-    writeDB(db);
+app.post('/api/storage', (req, res) => {
+  const { key, value } = req.body;
+  if (!key) return res.status(400).json({ error: 'Key required' });
+  
+  const db = readDB();
+  db[key] = value;
+  
+  if (writeDB(db)) {
     res.json({ success: true });
+  } else {
+    res.status(500).json({ error: 'Write failed' });
+  }
 });
 
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`\n\x1b[32m%s\x1b[0m`, `🚀 MIS BACKEND ACTIVE`);
+  console.log(`📡 URL: http://localhost:${PORT}`);
+  console.log(`📂 DB:  ${DB_FILE}\n`);
 });

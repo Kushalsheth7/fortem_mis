@@ -1,0 +1,227 @@
+:root {
+  --navy-900: #0f172a;
+  --navy-800: #1e293b;
+  --navy-700: #334155;
+  --slate-400: #94a3b8;
+  --slate-200: #e2e8f0;
+  --slate-50: #f8fafc;
+  --emerald-500: #10b981;
+  --emerald-600: #059669;
+  --rose-500: #f43f5e;
+  --indigo-600: #4f46e5;
+  
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --radius-lg: 12px;
+  --radius-md: 8px;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--slate-50);
+  color: var(--navy-900);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.portal-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.main-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  flex: 1;
+  overflow: hidden;
+}
+
+.sidebar {
+  background: white;
+  border-right: 1px solid var(--slate-200);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.content-viewport {
+  flex: 1;
+  padding: 1.5rem;
+  background-color: var(--slate-50);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* LOCKS THE PAGE SCROLL */
+}
+
+.card {
+  background: white;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--slate-200);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.glass-header {
+  background: var(--navy-900);
+  color: white;
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-tabs {
+  display: flex;
+  background: white;
+  border-bottom: 1px solid var(--slate-200);
+  padding: 0 1rem;
+}
+
+.nav-tab {
+  padding: 0.75rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--slate-400);
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-tab:hover {
+  background: var(--slate-50);
+  color: var(--navy-900);
+}
+
+.nav-tab.active {
+  background: var(--indigo-600);
+  color: white;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  padding: 1.5rem;
+  background: white;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--slate-200);
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--slate-400);
+  font-weight: 600;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-top: 0.25rem;
+  color: var(--navy-900);
+}
+
+.table-container {
+  overflow-x: auto;
+  overflow-y: auto;
+  flex: 1;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+
+/* Premium SaaS Scrollbar */
+.table-container::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.table-container::-webkit-scrollbar-track {
+  background: var(--slate-50);
+}
+.table-container::-webkit-scrollbar-thumb {
+  background: var(--slate-200);
+  border-radius: 10px;
+}
+.table-container::-webkit-scrollbar-thumb:hover {
+  background: var(--indigo-600);
+}
+
+table {
+  width: 100%;
+  border-collapse: separate; /* Required for sticky headers with borders */
+  border-spacing: 0;
+  font-size: 0.875rem;
+}
+
+thead th {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #f8fafc;
+  box-shadow: inset 0 -1px 0 var(--slate-200); /* Bottom border for sticky header */
+}
+
+th {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  background: var(--slate-50);
+  color: var(--navy-700);
+  font-weight: 600;
+  border-bottom: 1px solid var(--slate-200);
+}
+
+td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--slate-200);
+}
+
+.btn-primary {
+  background: var(--indigo-600);
+  color: white;
+  border: none;
+  padding: 0.625rem 1.25rem;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter 0.2s;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.1);
+}
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.65rem;
+  font-weight: 800;
+  background: var(--slate-200);
+  color: var(--navy-700);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.table-row-hover:hover {
+  background-color: var(--slate-50);
+  cursor: default;
+}
+
+.view-content {
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
